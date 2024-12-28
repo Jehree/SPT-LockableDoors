@@ -1,0 +1,138 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\lockabledoors-core\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\lockabledoors-core\\patches\\gamestartedpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\patches\\gamestartedpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\lockabledoors-core\\patches\\gameendedpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\patches\\gameendedpatch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\lockabledoors-core\\helpers\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\helpers\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|c:\\sp tarkov\\spt3.10.x\\dev\\spt-lockabledoors\\lockabledoors-core\\components\\doorlock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\components\\doorlock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|c:\\sp tarkov\\spt3.10.x\\dev\\spt-lockabledoors\\lockabledoors-core\\helpers\\configurationmanagerattributes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\helpers\\configurationmanagerattributes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\lockabledoors-core\\models\\serverdatapack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9076ADE2-F4EE-4B5D-B9A6-29A054CF0A7E}|LockableDoors-Core\\LockableDoors.csproj|solutionrelative:lockabledoors-core\\models\\serverdatapack.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ConfigurationManagerAttributes.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Helpers\\ConfigurationManagerAttributes.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Helpers\\ConfigurationManagerAttributes.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Helpers\\ConfigurationManagerAttributes.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Helpers\\ConfigurationManagerAttributes.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAGcAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T19:45:59.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Settings.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Helpers\\Settings.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Helpers\\Settings.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Helpers\\Settings.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Helpers\\Settings.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAACUAAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T07:40:17.86Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DoorLock.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Components\\DoorLock.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Components\\DoorLock.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Components\\DoorLock.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Components\\DoorLock.cs",
+              "ViewState": "AQIAAIwAAAAAAAAAAAAYwCQAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T06:58:09.59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ServerDataPack.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Models\\ServerDataPack.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Models\\ServerDataPack.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Models\\ServerDataPack.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Models\\ServerDataPack.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwBIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T06:50:48.873Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameStartedPatch.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Patches\\GameStartedPatch.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Patches\\GameStartedPatch.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Patches\\GameStartedPatch.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Patches\\GameStartedPatch.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACMAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T06:48:40.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GameEndedPatch.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Patches\\GameEndedPatch.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Patches\\GameEndedPatch.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Patches\\GameEndedPatch.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Patches\\GameEndedPatch.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAC8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T06:39:23.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Plugin.cs",
+              "DocumentMoniker": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Plugin.cs",
+              "RelativeDocumentMoniker": "LockableDoors-Core\\Plugin.cs",
+              "ToolTip": "C:\\SP Tarkov\\SPT3.10.X\\Dev\\SPT-LockableDoors\\LockableDoors-Core\\Plugin.cs",
+              "RelativeToolTip": "LockableDoors-Core\\Plugin.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-28T06:36:13.236Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

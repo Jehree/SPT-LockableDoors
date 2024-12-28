@@ -1,13 +1,8 @@
 ﻿using EFT.Interactive;
-using Fika.Core.UI.Patches.MatchmakerAcceptScreen;
 using InteractableInteractionsAPI.Models;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -41,7 +36,7 @@ namespace LockableDoors.Components
             Obstacle.carving = true;
             Obstacle.carveOnlyStationary = false;
             Door = gameObject.GetComponent<Door>();
-            ModSession.AddDoor(Door);
+            ModSession.AddInitializedDoor(Door);
         }
 
         public void AddLockInteractionsToActionList(List<ActionsTypesClass> vanillaActionList)
@@ -100,8 +95,8 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = GetLock(id);
                     doorLock.Lock();
-                    FikaWrapper.SendDoorLockedStatePacket(id, true);
-                    NotificationManagerClass.DisplayMessageNotification($"Locked! {ModSession.Instance.LockedDoorsCount}/{Settings.GetLockedDoorLimit()} doors locked");
+                    FikaInterface.SendDoorLockedStatePacket(id, true);
+                    NotificationManagerClass.DisplayMessageNotification($"Locked! {ModSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 
                     if (Settings.VisualizerEnabled.Value)
                     {
@@ -121,8 +116,8 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = ModSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>();
                     doorLock.Lock();
-                    FikaWrapper.SendDoorLockedStatePacket(doorId, true);
-                    NotificationManagerClass.DisplayMessageNotification($"Locked! {ModSession.Instance.LockedDoorsCount}/{Settings.GetLockedDoorLimit()} doors locked");
+                    FikaInterface.SendDoorLockedStatePacket(doorId, true);
+                    NotificationManagerClass.DisplayMessageNotification($"Locked! {ModSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 
                     if (Settings.VisualizerEnabled.Value)
                     {
@@ -149,8 +144,9 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = GetLock(id);
                     doorLock.Unlock();
-                    FikaWrapper.SendDoorLockedStatePacket(id, false);
-                    NotificationManagerClass.DisplayMessageNotification($"Unlocked! {ModSession.Instance.LockedDoorsCount}/{Settings.GetLockedDoorLimit()} doors locked");
+                    FikaInterface.SendDoorLockedStatePacket(id, false);
+
+                    NotificationManagerClass.DisplayMessageNotification($"Unlocked! {ModSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 
                     if (Settings.VisualizerEnabled.Value)
                     {
@@ -189,6 +185,18 @@ namespace LockableDoors.Components
         {
             if (_visualizer == null) return;
             _visualizer.SetActive(false);
+        }
+
+        private static string GetDoorLimitText()
+        {
+            if (Settings.LockedDoorLimitsEnabled.Value)
+            {
+                return Settings.GetLockedDoorLimit().ToString();
+            }
+            else
+            {
+                return "∞";
+            }
         }
     }
 }

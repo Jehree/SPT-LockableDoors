@@ -19,21 +19,20 @@ namespace LockableDoors.Patches
         [PatchPrefix]
         static void PatchPrefix()
         {
-            Plugin.LogSource.LogError(FikaInterface.GetRaidId());
             ServerDataPack requestPack = new ServerDataPack(FikaInterface.GetRaidId(), ModSession.Instance.GameWorld.LocationId.ToLower());
-            Plugin.LogSource.LogError("1");
             ServerDataPack pack = Utils.ServerRoute<ServerDataPack>(Plugin.DataToClientURL, requestPack);
-            Plugin.LogSource.LogError("2");
             foreach (string id in pack.LockedDoorIds)
             {
-                Plugin.LogSource.LogError(id);
-                Door door = ModSession.Instance.GameWorld.FindDoor(id) as Door;
-                Plugin.LogSource.LogError(door == null);
-
+                Door door = ModSession.GetDoor(id);
                 if (door.DoorState != EDoorState.Shut) continue;
 
                 DoorLock doorLock = door.gameObject.AddComponent<DoorLock>();
                 doorLock.Lock();
+
+                if (Settings.VisualizerEnabled.Value)
+                {
+                    doorLock.EnabledVisualizer();
+                }
             }
         }
     }

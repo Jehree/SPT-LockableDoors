@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ConsoleCommands.cs" />
     <Compile Include="Components\DoorLock.cs" />
     <Compile Include="Components\ModSession.cs" />
     <Compile Include="Fika\FikaInterface.cs" />
@@ -143,9 +144,7 @@
       <Name>LockableDoors-Packets</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\..\BepInEx\plugins\LockableDoors\$(TargetFileName)"</PostBuildEvent>

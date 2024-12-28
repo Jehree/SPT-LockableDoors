@@ -36,7 +36,7 @@ namespace LockableDoors.Patches
         {
             if (!FikaInterface.IAmHost()) return;
 
-            List<string> lockedDoorIds = ModSession.Instance.DoorLookup.Values.Where(door => door.DoorState == EDoorState.Locked)
+            List<string> lockedDoorIds = ModSession.Instance.DoorsWithLocks.Values.Where(door => door.DoorState == EDoorState.Locked)
                                                                               .Select(door => door.Id)
                                                                               .ToList();
 

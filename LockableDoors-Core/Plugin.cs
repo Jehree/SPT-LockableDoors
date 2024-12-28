@@ -2,6 +2,7 @@
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using EFT.UI;
+using LockableDoors.Common;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
 using LockableDoors.Patches;
@@ -11,6 +12,7 @@ using System.Reflection;
 
 namespace LockableDoors
 {
+    [BepInDependency("xyz.drakia.doorrandomizer", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.fika.core", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin("Jehree.LockableDoors", "LockableDoors", "1.0.0")]
     public class Plugin : BaseUnityPlugin
@@ -36,6 +38,7 @@ namespace LockableDoors
             new GameStartedPatch().Enable();
             new GameEndedPatch().Enable();
 
+            ConsoleScreen.Processor.RegisterCommandGroup<ConsoleCommands>();
         }
 
         private void OnEnable()

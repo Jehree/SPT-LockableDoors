@@ -35,14 +35,16 @@ namespace LockableDoors.Components
             }
         }
 
-        public Dictionary<string, Door> DoorLookup = new();
+        public Dictionary<string, Door> WorldDoors { get; private set; } = new();
+
+        public Dictionary<string, Door> DoorsWithLocks = new();
 
         public int LockedDoorsCount
         {
             get
             {
                 int i = 0;
-                foreach (var kvp in DoorLookup)
+                foreach (var kvp in DoorsWithLocks)
                 {
                     if (kvp.Value.DoorState == EDoorState.Locked) i++;
                 }
@@ -55,21 +57,23 @@ namespace LockableDoors.Components
             GameWorld = Singleton<GameWorld>.Instance;
             Player = GameWorld.MainPlayer;
             GamePlayerOwner = Player.gameObject.GetComponent<GamePlayerOwner>();
+
+            FindObjectsOfType<Door>().ExecuteForEach(door => { WorldDoors[door.Id] = door; });
         }
 
-        public static void AddDoor(Door door)
+        public static void AddInitializedDoor(Door door)
         {
-            if (Instance.DoorLookup.ContainsKey(door.Id))
+            if (Instance.DoorsWithLocks.ContainsKey(door.Id))
             {
                 throw new Exception("Tried to add door to DoorLookup with a doorId that was already in the dictionary!");
             }
 
-            Instance.DoorLookup[door.Id] = door;
+            Instance.DoorsWithLocks[door.Id] = door;
         }
 
         public static Door GetDoor(string id)
         {
-            return Instance.GameWorld.FindDoor(id) as Door;
+            return ModSession.Instance.WorldDoors[id];
         }
     }
 }

@@ -37,6 +37,12 @@ namespace LockableDoors.Components
             Obstacle.carveOnlyStationary = false;
             Door = gameObject.GetComponent<Door>();
             ModSession.AddInitializedDoor(Door);
+            Door.OnDoorStateChanged += OnDoorStateChanged;
+        }
+
+        public virtual void OnDoorStateChanged(WorldInteractiveObject subscribee, EDoorState previous, EDoorState next)
+        {
+            Obstacle.enabled = next == EDoorState.Locked;
         }
 
         public void AddLockInteractionsToActionList(List<ActionsTypesClass> vanillaActionList)

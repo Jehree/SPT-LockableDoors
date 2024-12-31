@@ -14,6 +14,7 @@ namespace LockableDoors.Helpers
         public static ConfigEntry<float> NavMeshObstacleZSizeMultiplier;
 
         public static ConfigEntry<bool> LockedDoorLimitsEnabled;
+        public static ConfigEntry<bool> BSGLockedDoorsRequireKey;
 
         public static ConfigEntry<int> CustomsAllottedPoints;
         public static ConfigEntry<int> FactoryAllottedPoints;
@@ -58,10 +59,16 @@ namespace LockableDoors.Helpers
             );
 
             LockedDoorLimitsEnabled = config.Bind(
-                "1: Locked Door Limits",
-                "Enabled",
+                "1: General",
+                "Limits Enabled",
                 true,
-                "Set to false if you want unlimited locked doors on every map"
+                "Set to false if you want unlimited locked doors on every map."
+            );
+            BSGLockedDoorsRequireKey = config.Bind(
+                "1: General",
+                "BSG Locked Doors Require Key",
+                false,
+                "Set to false if you want to be able to re-unlock doors that require a key without consuming another use of the key. Recommended to leave disabled unless you have infinite key uses enabled via another mod. This setting requires a new raid to take full affect."
             );
 
             CustomsAllottedPoints = config.Bind(

@@ -14,7 +14,7 @@ namespace LockableDoors
 {
     [BepInDependency("xyz.drakia.doorrandomizer", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.fika.core", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInPlugin("Jehree.LockableDoors", "LockableDoors", "1.0.1")]
+    [BepInPlugin("Jehree.LockableDoors", "LockableDoors", "1.0.2")]
     public class Plugin : BaseUnityPlugin
     {
         public const string DataToServerURL = "/jehree/lockabledoors/data_to_server";

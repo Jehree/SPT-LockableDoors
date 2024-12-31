@@ -26,6 +26,7 @@ namespace LockableDoors.Patches
             }
             else
             {
+                if (!ModSession.Instance.WorldDoors.ContainsKey(door.Id)) return;
                 DoorLock.AddUninitializedLockInteractionsToActionList(__result.Actions, door);
             }
         }

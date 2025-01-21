@@ -37,8 +37,8 @@ namespace LockableDoors.Components
             Obstacle.size = ObstacleSize;
             Obstacle.carving = true;
             Obstacle.carveOnlyStationary = false;
-            Door = gameObject.GetComponent<Door>();
-            ModSession.AddInitializedDoor(Door);
+            Door = gameObject.GetComponent<Door>(); 
+            LDSession.AddInitializedDoor(Door);
             Door.OnDoorStateChanged += OnDoorStateChanged;
 
             // if config option to require the key for re-unlocking is NOT set, make sure this door has no key assigned to it so that the vanilla "UNLOCK" option will not show
@@ -110,13 +110,13 @@ namespace LockableDoors.Components
             return new Interaction
             (
                 "Lock",
-                () => { return Settings.GetLockedDoorLimit() <= ModSession.Instance.LockedDoorsCount; },
+                () => { return Settings.GetLockedDoorLimit() <= LDSession.Instance.LockedDoorsCount; },
                 () =>
                 {
                     DoorLock doorLock = GetLock(id);
                     doorLock.Lock();
                     FikaInterface.SendDoorLockedStatePacket(id, true);
-                    NotificationManagerClass.DisplayMessageNotification($"Locked! {ModSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
+                    NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
                     
 
                     if (Settings.VisualizerEnabled.Value)
@@ -132,13 +132,13 @@ namespace LockableDoors.Components
             return new Interaction
             (
                 "Lock",
-                () => { return Settings.GetLockedDoorLimit() <= ModSession.Instance.LockedDoorsCount; },
+                () => { return Settings.GetLockedDoorLimit() <= LDSession.Instance.LockedDoorsCount; },
                 () =>
                 {
-                    DoorLock doorLock = ModSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>();
+                    DoorLock doorLock = LDSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>();
                     doorLock.Lock();
                     FikaInterface.SendDoorLockedStatePacket(doorId, true);
-                    NotificationManagerClass.DisplayMessageNotification($"Locked! {ModSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
+                    NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 
                     if (Settings.VisualizerEnabled.Value)
                     {
@@ -167,7 +167,7 @@ namespace LockableDoors.Components
                     doorLock.Unlock();
                     FikaInterface.SendDoorLockedStatePacket(id, false);
 
-                    NotificationManagerClass.DisplayMessageNotification($"Unlocked! {ModSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
+                    NotificationManagerClass.DisplayMessageNotification($"Unlocked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 
                     if (Settings.VisualizerEnabled.Value)
                     {
@@ -184,7 +184,7 @@ namespace LockableDoors.Components
 
         public static DoorLock GetLock(string doorId)
         {
-            return GetLock(ModSession.GetDoor(doorId));
+            return GetLock(LDSession.GetDoor(doorId));
         }
 
         public void EnabledVisualizer()

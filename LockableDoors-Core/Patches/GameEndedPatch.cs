@@ -36,11 +36,11 @@ namespace LockableDoors.Patches
         {
             if (!FikaInterface.IAmHost()) return;
 
-            List<string> lockedDoorIds = ModSession.Instance.DoorsWithLocks.Values.Where(door => door.DoorState == EDoorState.Locked)
+            List<string> lockedDoorIds = LDSession.Instance.DoorsWithLocks.Values.Where(door => door.DoorState == EDoorState.Locked)
                                                                               .Select(door => door.Id)
                                                                               .ToList();
 
-            ServerDataPack pack = new ServerDataPack(FikaInterface.GetRaidId(), ModSession.Instance.GameWorld.LocationId.ToLower(), lockedDoorIds);
+            ServerDataPack pack = new ServerDataPack(FikaInterface.GetRaidId(), LDSession.Instance.GameWorld.LocationId.ToLower(), lockedDoorIds);
             Utils.ServerRoute(Plugin.DataToServerURL, pack);
         }
     }

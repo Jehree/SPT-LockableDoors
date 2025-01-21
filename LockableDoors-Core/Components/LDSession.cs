@@ -10,15 +10,15 @@ using UnityEngine;
 
 namespace LockableDoors.Components
 {
-    internal class ModSession : MonoBehaviour
+    internal class LDSession : MonoBehaviour
     {
-        private ModSession() { }
-        private static ModSession _instance = null;
+        private LDSession() { }
+        private static LDSession _instance = null;
 
         public Player Player { get; private set; }
         public GameWorld GameWorld { get; private set; }
         public GamePlayerOwner GamePlayerOwner { get; private set; }
-        public static ModSession Instance
+        public static LDSession Instance
         {
             get
             {
@@ -29,7 +29,7 @@ namespace LockableDoors.Components
                         throw new Exception("Can't get ModSession Instance when GameWorld is not instantiated!");
                     }
 
-                    _instance = Singleton<GameWorld>.Instance.MainPlayer.gameObject.GetOrAddComponent<ModSession>();
+                    _instance = Singleton<GameWorld>.Instance.MainPlayer.gameObject.GetOrAddComponent<LDSession>();
                 }
                 return _instance;
             }
@@ -73,7 +73,7 @@ namespace LockableDoors.Components
 
         public static Door GetDoor(string id)
         {
-            return ModSession.Instance.WorldDoors[id];
+            return Instance.WorldDoors[id];
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LockableDoors.Components;
+using LockableDoors.Fika;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +22,11 @@ namespace LockableDoors.Models
             {
                 LockedDoorIds = lockedDoorIds;
             }
+        }
+
+        public static ServerDataPack GetRequestPack()
+        {
+            return new ServerDataPack(FikaInterface.GetRaidId(), LDSession.Instance.GameWorld.LocationId.ToLower());
         }
     }
 }

@@ -41,7 +41,7 @@ namespace LockableDoors.Fika
 
         private static void OnDoorLockedStatePacketReceived(DoorLockedStatePacket packet, NetPeer peer)
         {
-            Door door = ModSession.GetDoor(packet.DoorId);
+            Door door = LDSession.GetDoor(packet.DoorId);
 
             if (door == null)
             {

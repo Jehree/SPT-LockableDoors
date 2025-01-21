@@ -124,7 +124,7 @@
   <ItemGroup>
     <Compile Include="Common\ConsoleCommands.cs" />
     <Compile Include="Components\DoorLock.cs" />
-    <Compile Include="Components\ModSession.cs" />
+    <Compile Include="Components\LDSession.cs" />
     <Compile Include="Fika\FikaInterface.cs" />
     <Compile Include="Fika\FikaWrapper.cs" />
     <Compile Include="Helpers\ConfigurationManagerAttributes.cs" />

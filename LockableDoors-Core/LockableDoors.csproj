@@ -114,9 +114,6 @@
       <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\bsg.console.core.dll</HintPath>
     </Reference>
     <Reference Include="DissonanceVoip" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\DissonanceVoip.dll" Private="false" />
-    <Reference Include="Fika.Core">
-      <HintPath>..\..\..\BepInEx\plugins\Fika.Core.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -125,8 +122,7 @@
     <Compile Include="Common\ConsoleCommands.cs" />
     <Compile Include="Components\DoorLock.cs" />
     <Compile Include="Components\LDSession.cs" />
-    <Compile Include="Fika\FikaInterface.cs" />
-    <Compile Include="Fika\FikaWrapper.cs" />
+    <Compile Include="Fika\FikaBridge.cs" />
     <Compile Include="Helpers\ConfigurationManagerAttributes.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Utils.cs" />
@@ -137,12 +133,6 @@
     <Compile Include="Patches\GetAvailableActionsPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LockableDoors-Packets\LockableDoors-Packets.csproj">
-      <Project>{f2f6a3e6-d43d-4b1a-8a98-05900fda5247}</Project>
-      <Name>LockableDoors-Packets</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

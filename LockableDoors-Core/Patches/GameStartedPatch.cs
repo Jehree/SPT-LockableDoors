@@ -1,7 +1,6 @@
 ﻿using EFT;
 using EFT.Interactive;
 using LockableDoors.Components;
-using LockableDoors.Fika;
 using LockableDoors.Helpers;
 using LockableDoors.Models;
 using SPT.Reflection.Patching;

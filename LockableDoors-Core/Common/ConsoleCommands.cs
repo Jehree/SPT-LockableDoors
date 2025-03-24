@@ -3,11 +3,6 @@ using EFT.UI;
 using LockableDoors.Components;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LockableDoors.Common
 {
@@ -26,7 +21,7 @@ namespace LockableDoors.Common
             {
                 DoorLock doorLock = DoorLock.GetLock(kvp.Value.Id);
                 doorLock.Unlock();
-                FikaInterface.SendDoorLockedStatePacket(kvp.Value.Id, false);
+                FikaBridge.SendDoorLockedStatePacket(kvp.Value.Id, false);
 
                 if (Settings.VisualizerEnabled.Value)
                 {

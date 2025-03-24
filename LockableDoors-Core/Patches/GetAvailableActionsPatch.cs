@@ -1,9 +1,9 @@
-﻿using EFT.Interactive;
-using EFT;
+﻿using EFT;
+using EFT.Interactive;
 using HarmonyLib;
+using LockableDoors.Components;
 using SPT.Reflection.Patching;
 using System.Reflection;
-using LockableDoors.Components;
 
 namespace LockableDoors.Patches
 {

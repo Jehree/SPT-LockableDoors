@@ -1,6 +1,4 @@
-﻿using Comfort.Common;
-using EFT.Interactive;
-using EFT.UI;
+﻿using EFT.Interactive;
 using InteractableInteractionsAPI.Models;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
@@ -37,7 +35,7 @@ namespace LockableDoors.Components
             Obstacle.size = ObstacleSize;
             Obstacle.carving = true;
             Obstacle.carveOnlyStationary = false;
-            Door = gameObject.GetComponent<Door>(); 
+            Door = gameObject.GetComponent<Door>();
             LDSession.AddInitializedDoor(Door);
             Door.OnDoorStateChanged += OnDoorStateChanged;
 
@@ -115,9 +113,9 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = GetLock(id);
                     doorLock.Lock();
-                    FikaInterface.SendDoorLockedStatePacket(id, true);
+                    FikaBridge.SendDoorLockedStatePacket(id, true);
                     NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
-                    
+
 
                     if (Settings.VisualizerEnabled.Value)
                     {
@@ -137,7 +135,7 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = LDSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>();
                     doorLock.Lock();
-                    FikaInterface.SendDoorLockedStatePacket(doorId, true);
+                    FikaBridge.SendDoorLockedStatePacket(doorId, true);
                     NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 
                     if (Settings.VisualizerEnabled.Value)
@@ -151,7 +149,7 @@ namespace LockableDoors.Components
         public void Unlock()
         {
             Obstacle.enabled = false;
-            Door.DoorState= EDoorState.Shut;
+            Door.DoorState = EDoorState.Shut;
         }
 
         private Interaction GetUnlockInteraction()
@@ -165,7 +163,7 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = GetLock(id);
                     doorLock.Unlock();
-                    FikaInterface.SendDoorLockedStatePacket(id, false);
+                    FikaBridge.SendDoorLockedStatePacket(id, false);
 
                     NotificationManagerClass.DisplayMessageNotification($"Unlocked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 

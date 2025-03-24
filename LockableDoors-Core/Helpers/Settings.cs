@@ -2,7 +2,6 @@
 using Comfort.Common;
 using EFT;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace LockableDoors.Helpers
 {

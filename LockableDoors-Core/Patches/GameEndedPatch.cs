@@ -24,23 +24,22 @@ namespace LockableDoors.Patches
                 !targetClass.IsInterface &&
                 !targetClass.IsNested &&
                 targetClass.GetMethods().Any(method => method.Name == "LocalRaidEnded") &&
-                targetClass.GetMethods().Any(method => method.Name == "ReceiveInsurancePrices")
+                targetClass.GetMethods().Any(method => method.Name == "LocalRaidStarted")
             );
 
             return AccessTools.Method(_targetClassType.GetTypeInfo(), "LocalRaidEnded");
         }
 
-        // LocalRaidSettings settings, GClass1924 results, GClass1301[] lostInsuredItems, Dictionary<string, GClass1301[]> transferItems
         [PatchPostfix]
         static void Postfix(LocalRaidSettings settings, object results, ref object[] lostInsuredItems, object transferItems)
         {
-            if (!FikaInterface.IAmHost()) return;
+            if (!FikaBridge.IAmHost()) return;
 
             List<string> lockedDoorIds = LDSession.Instance.DoorsWithLocks.Values.Where(door => door.DoorState == EDoorState.Locked)
                                                                               .Select(door => door.Id)
                                                                               .ToList();
 
-            ServerDataPack pack = new ServerDataPack(FikaInterface.GetRaidId(), LDSession.Instance.GameWorld.LocationId.ToLower(), lockedDoorIds);
+            ServerDataPack pack = new ServerDataPack(FikaBridge.GetRaidId(), LDSession.Instance.GameWorld.LocationId.ToLower(), lockedDoorIds);
             Utils.ServerRoute(Plugin.DataToServerURL, pack);
         }
     }

@@ -18,6 +18,7 @@ namespace LockableDoors.Patches
         static void PatchPostfix(GamePlayerOwner owner, object interactive, ref ActionsReturnClass __result)
         {
             if (interactive is not Door) return;
+            if (interactive is KeycardDoor) return;
             Door door = interactive as Door;
 
             if (door.gameObject.TryGetComponent(out DoorLock doorLock))

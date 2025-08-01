@@ -34,16 +34,17 @@ namespace LockableDoors.Components
 
         public Dictionary<string, Door> WorldDoors { get; private set; } = new();
 
-        public Dictionary<string, Door> DoorsWithLocks = new();
+        //public Dictionary<string, Door> DoorsWithLocks = new();
+        public List<Door> DoorsWithLocks = [];
 
         public int LockedDoorsCount
         {
             get
             {
                 int i = 0;
-                foreach (var kvp in DoorsWithLocks)
+                foreach (var door in DoorsWithLocks)
                 {
-                    if (kvp.Value.DoorState == EDoorState.Locked) i++;
+                    if (door.DoorState == EDoorState.Locked) i++;
                 }
                 return i;
             }
@@ -60,12 +61,12 @@ namespace LockableDoors.Components
 
         public static void AddInitializedDoor(Door door)
         {
-            if (Instance.DoorsWithLocks.ContainsKey(door.Id))
+            if (Instance.DoorsWithLocks.Contains(door))
             {
                 throw new Exception("Tried to add door to DoorLookup with a doorId that was already in the dictionary!");
             }
 
-            Instance.DoorsWithLocks[door.Id] = door;
+            Instance.DoorsWithLocks.Add(door);
         }
 
         public static Door GetDoor(string id)

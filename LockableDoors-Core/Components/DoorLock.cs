@@ -3,6 +3,7 @@ using InteractableInteractionsAPI.Models;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -95,11 +96,27 @@ namespace LockableDoors.Components
             }
         }
 
-        public void Lock()
+        public void Lock(bool sendPacket = true)
         {
             Obstacle.enabled = true;
             Door.DoorState = EDoorState.Locked;
             Obstacle.size = ObstacleSize;
+
+            if (sendPacket)
+            {
+                FikaBridge.SendDoorLockedStatePacket(Door.Id, true);
+            }
+
+            NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
+
+            if (Settings.VisualizerEnabled.Value)
+            {
+                EnabledVisualizer();
+            }
+
+            // make sure newly locked doors are last in the list for lock falloff to work correctly
+            LDSession.Instance.DoorsWithLocks.Remove(Door);
+            LDSession.Instance.DoorsWithLocks.Add(Door);
         }
 
         private Interaction GetLockInteraction()
@@ -108,19 +125,17 @@ namespace LockableDoors.Components
             return new Interaction
             (
                 "Lock",
-                () => { return Settings.GetLockedDoorLimit() <= LDSession.Instance.LockedDoorsCount; },
                 () =>
                 {
-                    DoorLock doorLock = GetLock(id);
-                    doorLock.Lock();
-                    FikaBridge.SendDoorLockedStatePacket(id, true);
-                    NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
+                    if (Settings.OldLockFalloff.Value) return false;
+                    bool doorLimitReached = LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit();
+                    return doorLimitReached;
+                },
+                () =>
+                {
+                    HandleLockFalloff();
 
-
-                    if (Settings.VisualizerEnabled.Value)
-                    {
-                        doorLock.EnabledVisualizer();
-                    }
+                    GetLock(id).Lock();
                 }
             );
         }
@@ -130,26 +145,46 @@ namespace LockableDoors.Components
             return new Interaction
             (
                 "Lock",
-                () => { return Settings.GetLockedDoorLimit() <= LDSession.Instance.LockedDoorsCount; },
+                () => 
+                    {
+                        if (Settings.OldLockFalloff.Value) return false;
+                        bool doorLimitReached = LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit();
+                        return doorLimitReached;
+                    },
                 () =>
                 {
-                    DoorLock doorLock = LDSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>();
-                    doorLock.Lock();
-                    FikaBridge.SendDoorLockedStatePacket(doorId, true);
-                    NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
+                    HandleLockFalloff();
 
-                    if (Settings.VisualizerEnabled.Value)
-                    {
-                        doorLock.EnabledVisualizer();
-                    }
+                    LDSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>().Lock();
                 }
             );
         }
 
-        public void Unlock()
+        private static void HandleLockFalloff()
+        {
+            if (Settings.OldLockFalloff.Value && LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit())
+            {
+                Door door = LDSession.Instance.DoorsWithLocks.FirstOrDefault(door => door.DoorState == EDoorState.Locked);
+                if (door == null) return;
+                door.gameObject.GetComponent<DoorLock>().Unlock();
+
+                // recursively make sure only up to the number of doors allowed locked are, to cover config changes
+                if (LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit())
+                {
+                    HandleLockFalloff();
+                }
+            }
+        }
+
+        public void Unlock(bool sendPacket = true)
         {
             Obstacle.enabled = false;
             Door.DoorState = EDoorState.Shut;
+
+            if (sendPacket)
+            {
+                FikaBridge.SendDoorLockedStatePacket(Door.Id, false);
+            }
         }
 
         private Interaction GetUnlockInteraction()
@@ -163,7 +198,6 @@ namespace LockableDoors.Components
                 {
                     DoorLock doorLock = GetLock(id);
                     doorLock.Unlock();
-                    FikaBridge.SendDoorLockedStatePacket(id, false);
 
                     NotificationManagerClass.DisplayMessageNotification($"Unlocked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
 

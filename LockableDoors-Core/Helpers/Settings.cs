@@ -14,6 +14,8 @@ namespace LockableDoors.Helpers
 
         public static ConfigEntry<bool> LockedDoorLimitsEnabled;
         public static ConfigEntry<bool> BSGLockedDoorsRequireKey;
+        public static ConfigEntry<bool> UnlockAllDoorsOnRaidEnd;
+        public static ConfigEntry<bool> OldLockFalloff;
 
         public static ConfigEntry<int> CustomsAllottedPoints;
         public static ConfigEntry<int> FactoryAllottedPoints;
@@ -68,6 +70,18 @@ namespace LockableDoors.Helpers
                 "BSG Locked Doors Require Key",
                 false,
                 "Set to false if you want to be able to re-unlock doors that require a key without consuming another use of the key. Recommended to leave disabled unless you have infinite key uses enabled via another mod. This setting requires a new raid to take full affect."
+            );
+            UnlockAllDoorsOnRaidEnd = config.Bind(
+                "1: General",
+                "Unlock All Doors On Raid End",
+                false,
+                "Automatically unlock all doors when the raid ends."
+            );
+            OldLockFalloff = config.Bind(
+                "1: General",
+                "Old Lock Falloff",
+                false,
+                "If enabled, and when locked doors are maxed out, locking another door will cause the oldest locked one to unlock. Allows for 'circular' locking where you don't have to go back and unlock old doors to lock new ones."
             );
 
             CustomsAllottedPoints = config.Bind(

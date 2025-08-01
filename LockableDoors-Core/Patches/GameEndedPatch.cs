@@ -1,6 +1,7 @@
 ﻿using EFT;
 using EFT.Interactive;
 using HarmonyLib;
+using LockableDoors.Common;
 using LockableDoors.Components;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
@@ -35,7 +36,12 @@ namespace LockableDoors.Patches
         {
             if (!FikaBridge.IAmHost()) return;
 
-            List<string> lockedDoorIds = LDSession.Instance.DoorsWithLocks.Values.Where(door => door.DoorState == EDoorState.Locked)
+            if (Settings.UnlockAllDoorsOnRaidEnd.Value)
+            {
+                ConsoleCommands.UnlockAllDoors();
+            }
+
+            List<string> lockedDoorIds = LDSession.Instance.DoorsWithLocks.Where(door => door.DoorState == EDoorState.Locked)
                                                                               .Select(door => door.Id)
                                                                               .ToList();
 

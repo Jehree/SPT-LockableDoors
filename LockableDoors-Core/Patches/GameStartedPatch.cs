@@ -39,7 +39,7 @@ namespace LockableDoors.Patches
                 if (door.DoorState != EDoorState.Shut) continue;
 
                 DoorLock doorLock = door.gameObject.AddComponent<DoorLock>();
-                doorLock.Lock();
+                doorLock.Lock(false);
 
                 if (Settings.VisualizerEnabled.Value)
                 {

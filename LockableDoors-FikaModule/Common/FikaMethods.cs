@@ -51,11 +51,11 @@ internal class FikaMethods
 
         if (packet.IsLocked)
         {
-            doorLock.Lock();
+            doorLock.Lock(false);
         }
         else
         {
-            doorLock.Unlock();
+            doorLock.Unlock(false);
         }
 
         if (Singleton<FikaServer>.Instantiated)

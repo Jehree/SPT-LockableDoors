@@ -17,11 +17,10 @@ namespace LockableDoors.Common
                 return;
             }
 
-            foreach (var kvp in LDSession.Instance.DoorsWithLocks)
+            foreach (var door in LDSession.Instance.DoorsWithLocks)
             {
-                DoorLock doorLock = DoorLock.GetLock(kvp.Value.Id);
+                DoorLock doorLock = DoorLock.GetLock(door);
                 doorLock.Unlock();
-                FikaBridge.SendDoorLockedStatePacket(kvp.Value.Id, false);
 
                 if (Settings.VisualizerEnabled.Value)
                 {

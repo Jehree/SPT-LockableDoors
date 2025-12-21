@@ -56,7 +56,7 @@ namespace LockableDoors.Helpers
 
         public static List<GameObject> GetAllDescendants(GameObject parent)
         {
-            List<GameObject> descendants = new List<GameObject>();
+            List<GameObject> descendants = [];
 
             foreach (Transform child in parent.transform)
             {
@@ -67,13 +67,13 @@ namespace LockableDoors.Helpers
             return descendants;
         }
 
-        public static T ServerRoute<T>(string url, object data = default(object))
+        public static T ServerRoute<T>(string url, object data = default)
         {
             string json = JsonConvert.SerializeObject(data);
             var req = RequestHandler.PostJson(url, json);
             return JsonConvert.DeserializeObject<T>(req);
         }
-        public static string ServerRoute(string url, object data = default(object))
+        public static string ServerRoute(string url, object data = default)
         {
             string json = JsonConvert.SerializeObject(data);
             return RequestHandler.PostJson(url, json);

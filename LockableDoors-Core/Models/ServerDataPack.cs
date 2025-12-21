@@ -8,7 +8,7 @@ namespace LockableDoors.Models
     {
         public string ProfileId;
         public string MapId;
-        public List<string> LockedDoorIds = new List<string>();
+        public List<string> LockedDoorIds = [];
 
         public ServerDataPack(string profileId, string mapId, List<string> lockedDoorIds = null)
         {

@@ -1,11 +1,12 @@
 ﻿using EFT.Interactive;
-using InteractableInteractionsAPI.Models;
 using LockableDoors.Fika;
 using LockableDoors.Helpers;
+using LockableDoors.Models;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using static LockableDoors.Models.CustomInteraction;
 
 namespace LockableDoors.Components
 {
@@ -15,6 +16,7 @@ namespace LockableDoors.Components
         public NavMeshObstacle Obstacle { get; private set; }
         private BoxCollider _collider;
         private GameObject _visualizer = null;
+
         public Vector3 ObstacleSize
         {
             get
@@ -26,6 +28,10 @@ namespace LockableDoors.Components
                 );
             }
         }
+
+        private static string _doorLimitText => Settings.LockedDoorLimitsEnabled.Value
+            ? Settings.GetLockedDoorLimit().ToString()
+            : "∞";
 
         private void Awake()
         {
@@ -62,7 +68,7 @@ namespace LockableDoors.Components
                 // don't do anything if config is set to require the key for re-unlocking
                 if (doorRequiresKey && Settings.BSGLockedDoorsRequireKey.Value) return;
 
-                vanillaActionList.Insert(0, GetUnlockInteraction().ActionsTypesClass);
+                vanillaActionList.Insert(0, new UnlockInteraction(this).ActionsTypesClass);
                 return;
             }
             if (Door.DoorState == EDoorState.Shut)
@@ -74,10 +80,10 @@ namespace LockableDoors.Components
                     Door.KeyId = "";
                 }
 
-                vanillaActionList.Insert(1, GetLockInteraction().ActionsTypesClass);
+                vanillaActionList.Insert(1, new LockInteraction(this).ActionsTypesClass);
                 return;
             }
-            vanillaActionList.Insert(1, Interaction.GetDisabledInteraction("Lock").ActionsTypesClass);
+            vanillaActionList.Insert(1, new DisabledInteraction("Lock").ActionsTypesClass);
         }
 
         public static void AddUninitializedLockInteractionsToActionList(List<ActionsTypesClass> vanillaActionList, Door door)
@@ -85,13 +91,13 @@ namespace LockableDoors.Components
 
             if (door.DoorState == EDoorState.Shut)
             {
-                vanillaActionList.Insert(1, DoorLock.GetUninitializedLockInteration(door.Id).ActionsTypesClass);
+                vanillaActionList.Insert(1, new UninitializedLockInteration(door.Id).ActionsTypesClass);
                 return;
             }
 
             if (door.DoorState == EDoorState.Open)
             {
-                vanillaActionList.Insert(1, Interaction.GetDisabledInteraction("Lock").ActionsTypesClass);
+                vanillaActionList.Insert(1, new DisabledInteraction("Lock").ActionsTypesClass);
                 return;
             }
         }
@@ -107,8 +113,6 @@ namespace LockableDoors.Components
                 FikaBridge.SendDoorLockedStatePacket(Door.Id, true);
             }
 
-            NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
-
             if (Settings.VisualizerEnabled.Value)
             {
                 EnabledVisualizer();
@@ -118,48 +122,38 @@ namespace LockableDoors.Components
             LDSession.Instance.DoorsWithLocks.Remove(Door);
             LDSession.Instance.DoorsWithLocks.Add(Door);
         }
-
-        private Interaction GetLockInteraction()
+        public static bool IsLockInteractionEnabled()
         {
-            string id = Door.Id;
-            return new Interaction
-            (
-                "Lock",
-                () =>
-                {
-                    if (Settings.OldLockFalloff.Value) return false;
-                    bool doorLimitReached = LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit();
-                    return doorLimitReached;
-                },
-                () =>
-                {
-                    HandleLockFalloff();
-
-                    GetLock(id).Lock();
-                }
-            );
+            if (Settings.OldLockFalloff.Value) return true;
+            bool doorLimitReached = LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit();
+            return !doorLimitReached;
         }
 
-        public static Interaction GetUninitializedLockInteration(string doorId)
+        public class LockInteraction(DoorLock doorLock) : CustomInteraction
         {
-            return new Interaction
-            (
-                "Lock",
-                () => 
-                    {
-                        if (Settings.OldLockFalloff.Value) return false;
-                        bool doorLimitReached = LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit();
-                        return doorLimitReached;
-                    },
-                () =>
-                {
-                    HandleLockFalloff();
+            public override string Name => "Lock";
+            public override bool Enabled => IsLockInteractionEnabled();
 
-                    LDSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>().Lock();
-                }
-            );
+            public override void OnInteract()
+            {
+                HandleLockFalloff();
+                doorLock.Lock();
+                NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{_doorLimitText} doors locked");
+            }
         }
 
+        public class UninitializedLockInteration(string doorId) : CustomInteraction
+        {
+            public override string Name => "Lock";
+            public override bool Enabled => IsLockInteractionEnabled();
+
+            public override void OnInteract()
+            {
+                HandleLockFalloff();
+                LDSession.GetDoor(doorId).gameObject.AddComponent<DoorLock>().Lock();
+                NotificationManagerClass.DisplayMessageNotification($"Locked! {LDSession.Instance.LockedDoorsCount}/{_doorLimitText} doors locked");
+            }
+        }
         private static void HandleLockFalloff()
         {
             if (Settings.OldLockFalloff.Value && LDSession.Instance.LockedDoorsCount >= Settings.GetLockedDoorLimit())
@@ -175,8 +169,7 @@ namespace LockableDoors.Components
                 }
             }
         }
-
-        public void Unlock(bool sendPacket = true)
+                public void Unlock(bool sendPacket = true)
         {
             Obstacle.enabled = false;
             Door.DoorState = EDoorState.Shut;
@@ -187,34 +180,26 @@ namespace LockableDoors.Components
             }
         }
 
-        private Interaction GetUnlockInteraction()
+        public class UnlockInteraction(DoorLock doorLock) : CustomInteraction
         {
-            string id = Door.Id;
-            return new Interaction
-            (
-                "Unlock",
-                false,
-                () =>
+            public override string Name => "Unlock";
+
+            public override void OnInteract()
+            {
+                doorLock.Unlock();
+                NotificationManagerClass.DisplayMessageNotification($"Unlocked! {LDSession.Instance.LockedDoorsCount}/{_doorLimitText} doors locked");
+
+                if (Settings.VisualizerEnabled.Value)
                 {
-                    DoorLock doorLock = GetLock(id);
-                    doorLock.Unlock();
-
-                    NotificationManagerClass.DisplayMessageNotification($"Unlocked! {LDSession.Instance.LockedDoorsCount}/{GetDoorLimitText()} doors locked");
-
-                    if (Settings.VisualizerEnabled.Value)
-                    {
-                        doorLock.DisableVisualizer();
-                    }
+                    doorLock.DisableVisualizer();
                 }
-            );
+            }
         }
-
-        public static DoorLock GetLock(Door door)
+                public static DoorLock GetLock(Door door)
         {
             return door.gameObject.GetComponent<DoorLock>();
         }
-
-        public static DoorLock GetLock(string doorId)
+                public static DoorLock GetLock(string doorId)
         {
             return GetLock(LDSession.GetDoor(doorId));
         }
@@ -238,18 +223,6 @@ namespace LockableDoors.Components
         {
             if (_visualizer == null) return;
             _visualizer.SetActive(false);
-        }
-
-        private static string GetDoorLimitText()
-        {
-            if (Settings.LockedDoorLimitsEnabled.Value)
-            {
-                return Settings.GetLockedDoorLimit().ToString();
-            }
-            else
-            {
-                return "∞";
-            }
         }
     }
 }

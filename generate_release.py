@@ -10,7 +10,7 @@ MODS_DIR: str = Path("../../user/mods")
 MOD_NAME: str = "LockableDoors"
 ZIP_DIRS: list[str] = [
     Path("../../BepInEx/plugins/LockableDoors"),
-    Path("../../user/mods/LockableDoors-Server"),
+    Path("../../SPT/user/mods/LockableDoors-Server"),
 ]
 IGNORE_FILE_EXTENSIONS: list[str] = [
     ".js",

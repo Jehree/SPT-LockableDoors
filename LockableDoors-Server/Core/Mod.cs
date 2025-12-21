@@ -1,15 +1,11 @@
 using LockableDoorsServer.Models;
-using Microsoft.Extensions.Logging;
+using SPTarkov.Common.Extensions;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Logging;
-using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
-using SPTarkov.Server.Core.Utils.Logger;
 using System.Reflection;
 
 namespace LockableDoorsServer.Core;
@@ -23,43 +19,35 @@ public class Callbacks(
 {
     public ValueTask<string> OnDataToServer(string url, ServerDataPack? info, MongoId sessionId)
     {
-        if (info == null)
+        if (info is not null)
         {
-            return new ValueTask<string>(httpResponseUtil!.NullResponse());
+            string filePath = GetFilePath(info.ProfileId, info.MapId);
+            logger.Success(filePath);
+            File.WriteAllText(filePath, jsonUtil.Serialize(info));
         }
 
-        string filePath = GetFilePath(info.ProfileId, info.MapId);
-        logger.Success(filePath);
-        File.WriteAllText(filePath, jsonUtil.Serialize(info));
-
-        return new ValueTask<string>(httpResponseUtil!.NullResponse());
+        return new ValueTask<string>(httpResponseUtil.NullResponse());
     }
 
     public ValueTask<string> OnDataToClient(string url, ServerDataPack? info, MongoId sessionId)
     {
+        string? jsonData = null;
 
-        if (info == null)
+        if (info is not null)
         {
-            return new ValueTask<string>(httpResponseUtil.NullResponse());
+            string filePath = GetFilePath(info.ProfileId, info.MapId);
+
+            jsonData = File.Exists(filePath)
+                ? File.ReadAllText(filePath, System.Text.Encoding.UTF8)
+                : jsonUtil.Serialize(ServerDataPack.GetEmpty(info.ProfileId, info.MapId));
         }
 
-        string filePath = GetFilePath(info.ProfileId, info.MapId);
-
-        if (File.Exists(filePath))
-        {
-            string jsonData = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
-            return new ValueTask<string>(jsonData);
-        }
-        else
-        {
-            string jsonData = jsonUtil.Serialize(ServerDataPack.GetEmpty(info.ProfileId, info.MapId))!;
-            return new ValueTask<string>(jsonData);
-        }
+        return new ValueTask<string>(jsonData ?? httpResponseUtil.NullResponse());
     }
 
     private string GetFilePath(string profileId, string mapId)
     {
-        string pathToMod = modHelper!.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
+        string pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         ModConfig config = modHelper.GetJsonDataFromFile<ModConfig>(pathToMod, "config.json");
 
         string mapIdAdjusted = mapId;
@@ -88,7 +76,7 @@ public class Callbacks(
 }
 
 [Injectable]
-public class CustomStaticRouter(JsonUtil jsonUtil, Callbacks callbacks) 
+public class CustomStaticRouter(JsonUtil jsonUtil, Callbacks callbacks)
     : StaticRouter(
         jsonUtil,
         [
@@ -102,4 +90,4 @@ public class CustomStaticRouter(JsonUtil jsonUtil, Callbacks callbacks)
             )
         ]
     )
-{}
+{ }

@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <Authors>Jehree</Authors>
     <Copyright></Copyright>
-    <AssemblyVersion>1.7.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Configurations>Debug;Release;Package</Configurations>
     <Version>$(AssemblyVersion)</Version>

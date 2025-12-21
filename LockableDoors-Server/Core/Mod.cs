@@ -7,6 +7,7 @@ using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.Utils.Logger;
 using System.Reflection;
@@ -14,65 +15,32 @@ using System.Reflection;
 namespace LockableDoorsServer.Core;
 
 [Injectable]
-public class CustomStaticRouter : StaticRouter
-{
-    private static HttpResponseUtil? _httpResponseUtil;
-    private static ModHelper? _modHelper;
-    private static JsonUtil? _jsonUtil;
-    private static ISptLogger<CustomStaticRouter>? _logger;
-    const string DataToServerRouteURL = "/jehree/lockabledoors/data_to_server";
-    const string DataToClientRouteURL = "/jehree/lockabledoors/data_to_client";
-
-    public CustomStaticRouter(
+public class Callbacks(
     JsonUtil jsonUtil,
     HttpResponseUtil httpResponseUtil,
-    ModHelper modHelper,
-    ISptLogger<CustomStaticRouter> logger) : base(
-    jsonUtil,
-    GetCustomRoutes())
+    ISptLogger<Callbacks> logger,
+    ModHelper modHelper)
+{
+    public ValueTask<string> OnDataToServer(string url, ServerDataPack? info, MongoId sessionId)
     {
-        _httpResponseUtil = httpResponseUtil;
-        _modHelper = modHelper;
-        _jsonUtil = jsonUtil;
-        _logger = logger;
-    }
-
-    private static List<RouteAction> GetCustomRoutes()
-    {
-        return
-        [
-            new RouteAction<ServerDataPack>(
-                DataToServerRouteURL,
-                async (url, info, sessionId, output) => await OnDataToServer(url, info as ServerDataPack, sessionId)
-            ),
-            new RouteAction<ServerDataPack>(
-                DataToClientRouteURL,
-                async (url, info, sessionId, output) => await OnDataToClient(url, info as ServerDataPack, sessionId)
-            )
-        ];
-    }
-
-    private static ValueTask<string> OnDataToServer(string url, ServerDataPack? info, MongoId sessionId)
-    {
-        if (info == null || _jsonUtil == null)
+        if (info == null)
         {
-            _logger.Success((info == null).ToString());
-            _logger.Success((_jsonUtil == null).ToString());
-            return new ValueTask<string>(_httpResponseUtil!.NullResponse());
+            return new ValueTask<string>(httpResponseUtil!.NullResponse());
         }
-        
-        string filePath = GetFilePath(info.ProfileId, info.MapId);
-        _logger.Success(filePath);
-        File.WriteAllText(filePath, _jsonUtil.Serialize(info));
 
-        return new ValueTask<string>(_httpResponseUtil!.NullResponse());
+        string filePath = GetFilePath(info.ProfileId, info.MapId);
+        logger.Success(filePath);
+        File.WriteAllText(filePath, jsonUtil.Serialize(info));
+
+        return new ValueTask<string>(httpResponseUtil!.NullResponse());
     }
 
-    private static ValueTask<string> OnDataToClient(string url, ServerDataPack? info, MongoId sessionId)
+    public ValueTask<string> OnDataToClient(string url, ServerDataPack? info, MongoId sessionId)
     {
-        if (info == null || _jsonUtil == null)
+
+        if (info == null)
         {
-            return new ValueTask<string>(_httpResponseUtil!.NullResponse());
+            return new ValueTask<string>(httpResponseUtil.NullResponse());
         }
 
         string filePath = GetFilePath(info.ProfileId, info.MapId);
@@ -84,15 +52,15 @@ public class CustomStaticRouter : StaticRouter
         }
         else
         {
-            string jsonData = _jsonUtil.Serialize(ServerDataPack.GetEmpty(info.ProfileId, info.MapId))!;
+            string jsonData = jsonUtil.Serialize(ServerDataPack.GetEmpty(info.ProfileId, info.MapId))!;
             return new ValueTask<string>(jsonData);
         }
     }
 
-    public static string GetFilePath(string profileId, string mapId)
+    private string GetFilePath(string profileId, string mapId)
     {
-        string pathToMod = _modHelper!.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
-        ModConfig config = _modHelper.GetJsonDataFromFile<ModConfig>(pathToMod, "config.json");
+        string pathToMod = modHelper!.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
+        ModConfig config = modHelper.GetJsonDataFromFile<ModConfig>(pathToMod, "config.json");
 
         string mapIdAdjusted = mapId;
 
@@ -118,3 +86,20 @@ public class CustomStaticRouter : StaticRouter
         return filePath;
     }
 }
+
+[Injectable]
+public class CustomStaticRouter(JsonUtil jsonUtil, Callbacks callbacks) 
+    : StaticRouter(
+        jsonUtil,
+        [
+            new RouteAction<ServerDataPack>(
+                "/jehree/lockabledoors/data_to_server",
+                async (url, info, sessionId, output) => await callbacks.OnDataToServer(url, info, sessionId)
+            ),
+            new RouteAction<ServerDataPack>(
+                "/jehree/lockabledoors/data_to_client",
+                async (url, info, sessionId, output) => await callbacks.OnDataToClient(url, info, sessionId)
+            )
+        ]
+    )
+{}

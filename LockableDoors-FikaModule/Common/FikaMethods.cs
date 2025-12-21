@@ -1,12 +1,12 @@
 ﻿using Comfort.Common;
 using EFT.Interactive;
-using Fika.Core.Coop.Utils;
+using Fika.Core.Main.Utils;
 using Fika.Core.Modding;
 using Fika.Core.Modding.Events;
 using Fika.Core.Networking;
 using global::LockableDoors.FikaModule.Packets;
-using LiteNetLib;
 using LockableDoors.Components;
+using Fika.Core.Networking.LiteNetLib;
 
 namespace LockableDoors.FikaModule.Common;
 internal class FikaMethods
@@ -30,7 +30,7 @@ internal class FikaMethods
         };
         if (Singleton<FikaServer>.Instantiated)
         {
-            Singleton<FikaServer>.Instance.SendDataToAll(ref packet, DeliveryMethod.ReliableOrdered);
+            Singleton<FikaServer>.Instance.SendData(ref packet, DeliveryMethod.ReliableOrdered);
         }
         if (Singleton<FikaClient>.Instantiated)
         {
@@ -60,7 +60,7 @@ internal class FikaMethods
 
         if (Singleton<FikaServer>.Instantiated)
         {
-            Singleton<FikaServer>.Instance.SendDataToAll(ref packet, DeliveryMethod.ReliableOrdered);
+            Singleton<FikaServer>.Instance.SendData(ref packet, DeliveryMethod.ReliableOrdered);
         }
     }
 

@@ -8,6 +8,9 @@ using LockableDoors.Helpers;
 using LockableDoors.Patches;
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("LockableDoors-FikaModule")]
 
 namespace LockableDoors
 {

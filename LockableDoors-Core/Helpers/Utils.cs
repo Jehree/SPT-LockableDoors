@@ -75,19 +75,8 @@ namespace LockableDoors.Helpers
         }
         public static string ServerRoute(string url, object data = default(object))
         {
-            string json;
-            if (data is string)
-            {
-                Dictionary<string, string> dataDict = new Dictionary<string, string>();
-                dataDict.Add("data", (string)data);
-                json = JsonConvert.SerializeObject(dataDict);
-            }
-            else
-            {
-                json = JsonConvert.SerializeObject(data);
-            }
-
-            return RequestHandler.PutJson(url, json);
+            string json = JsonConvert.SerializeObject(data);
+            return RequestHandler.PostJson(url, json);
         }
     }
 }

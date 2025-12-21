@@ -1,19 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F2F6A3E6-D43D-4B1A-8A98-05900FDA5247}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>LockableDoors.FikaModule</RootNamespace>
-    <AssemblyName>LockableDoors-FikaModule</AssemblyName>
+    <Nullable>disable</Nullable>
+    <Authors>Jehree</Authors>
+    <Copyright></Copyright>
+    <AssemblyVersion>1.7.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Configurations>Debug;Release;Package</Configurations>
+    <Version>$(AssemblyVersion)</Version>
     <LangVersion>latest</LangVersion>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -31,6 +32,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LockableDoors-Core\LockableDoors.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="PhysicsModule">
       <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
@@ -112,7 +117,7 @@
     </Reference>
     <Reference Include="DissonanceVoip" HintPath="..\..\..\EscapeFromTarkov_Data\Managed\DissonanceVoip.dll" Private="false" />
     <Reference Include="Fika.Core">
-      <HintPath>..\..\..\BepInEx\plugins\Fika.Core.dll</HintPath>
+      <HintPath>..\..\..\BepInEx\plugins\Fika\Fika.Core.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.AIModule.dll</HintPath>
@@ -121,20 +126,8 @@
       <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\bsg.componentace.compression.libs.zlib.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\FikaMethods.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="Packets\Packets.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LockableDoors-Core\LockableDoors.csproj">
-      <Project>{9076ade2-f4ee-4b5d-b9a6-29a054cf0a7e}</Project>
-      <Name>LockableDoors</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\..\BepInEx\plugins\LockableDoors\$(TargetFileName)"</PostBuildEvent>
-  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="set MOD_DIR=$(ProjectDir)\..\..\..\BepInEx\plugins\LockableDoors&#xD;&#xA;if not exist &quot;%25MOD_DIR%25&quot; mkdir &quot;%25MOD_DIR%25&quot;&#xD;&#xA;copy &quot;$(TargetPath)&quot; &quot;%25MOD_DIR%25\$(TargetFileName)&quot;" />
+  </Target>
 </Project>

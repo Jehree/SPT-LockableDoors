@@ -41,11 +41,11 @@ public class CustomStaticRouter : StaticRouter
     {
         return
         [
-            new RouteAction(
+            new RouteAction<ServerDataPack>(
                 DataToServerRouteURL,
                 async (url, info, sessionId, output) => await OnDataToServer(url, info as ServerDataPack, sessionId)
             ),
-            new RouteAction(
+            new RouteAction<ServerDataPack>(
                 DataToClientRouteURL,
                 async (url, info, sessionId, output) => await OnDataToClient(url, info as ServerDataPack, sessionId)
             )
@@ -60,7 +60,7 @@ public class CustomStaticRouter : StaticRouter
             _logger.Success((_jsonUtil == null).ToString());
             return new ValueTask<string>(_httpResponseUtil!.NullResponse());
         }
-
+        
         string filePath = GetFilePath(info.ProfileId, info.MapId);
         _logger.Success(filePath);
         File.WriteAllText(filePath, _jsonUtil.Serialize(info));
